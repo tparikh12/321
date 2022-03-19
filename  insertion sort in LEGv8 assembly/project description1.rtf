@@ -1,0 +1,149 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue233;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c93333;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid301\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid4}
+{\list\listtemplateid5\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid401\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid5}
+{\list\listtemplateid6\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid501\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid6}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}{\listoverride\listid6\listoverridecount0\ls6}}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 You may work in teams of 1 or 2 on this assignment. EXACTLY ONE MEMBER OF YOUR TEAM SHOULD SUBMIT THE ASSIGNMENT IN CANVAS!\'a0 THE TAs WILL ASSESS A PENALTY IF MORE THAN ONE MEMBER OF YOUR GROUP SUBMITS THE ASSIGNMENT, AS THIS CREATES A SIGNIFICANT OVERHEAD FOR THEM WHILE GRADING.\'a0 Your submission should be headed by a comment giving the names and NetIDs of each member of your team.\
+\
+You will be writing a program in LEGv8 assembly. Contrary to the claims in the textbook, there is not an emulator that comes with the book; in its place, I wrote one. Our emulator is Linux only. I've placed a statically-linked copy on Pyrite in /share/cs321/legv8emul . I've also attached a copy here: {\field{\*\fldinst{HYPERLINK "/redirect/s3?bucket=uploads&prefix=paste%2Fjl3xxt6a69d7hc%2Ff3c88dc4227c6744d86a8136e86c6cc451510b906ed2a75e8f75978c4895dd76%2Flegv8emul"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 legv8emul}}. Being statically linked, it should work on any Linux system and the Windows Linux Subsystem.\'a0 Since your U drive is mapped to Pyrite, simply running your programs on Pyrite and editing them on your favorite platform will probably be simplest for most of you. Information about how to access Pyrite and about VM access is at the bottom of this document, reproduced from my COM S 327 syllabus.\
+\
+You will be implementing insertion sort in LEGv8 assembly.\'a0 In a high(er) level language, implementing the entirety of insertion sort in a single function should be straightforward for students with your level of experience, but in assembly, it gets complicated fairly quickly.\'a0 To ameliorate some of the complication, we'll break the implementation into a number of procedures, none of which require nested loops.\'a0 Descriptions of these procedures, some with pseudocode, follow.\
+\
+In the problem description below, all values are 8 bytes each. Procedures to be solved in LEGv8 assembly:\
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls1\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Shift right: This procedure takes three parameters, the address of an array of ints, the index of the final element in the array, and a position in the array.\'a0 It overwrites the final element, shifting intermediate elements to the right, leaving a whole at the position.\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 ShiftRight(addr, pos, final):\
+\'a0 for i from final - 1 to pos:\
+\'a0 \'a0 addr[i + 1] = addr[i]\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls2\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Find sorted position: This procedure takes three parameters, the address of an array of sorted ints, a value, and the index of the last element in the array.\'a0 It searches the array for the sorted position of the value and returns that index.\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 FindSortedPos(addr, val, final):\
+\'a0 for i from 0 to final\
+\'a0 \'a0 if addr[i] >= val\
+\'a0 \'a0 \'a0 break\
+\'a0 return i\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls3\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Insert sorted position: This procedure takes three parameters, the address of a partially-sorted array of ints, the index of the first item in the array that is not in sorted position, and the index of the last element of the array.\'a0 It moves the first unsorted element into its sorted position, shifting elements to the right as necessary such that the entire element is in sorted order and no data is lost.\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 InsertSortedPos(addr, pos, final):\
+\'a0 v = addr[pos]\
+\'a0 p = FindSortedPos(addr, v, final)\
+\'a0 ShiftRight(addr, p, final)\
+\'a0 addr(p) = v\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls4\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Insertion sort: This procedure takes two parameters, the address of an array of ints and the number of elements in the array.\'a0 It sorts the array using the insertion sort algorithm.\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 InsertionSort(addr, length):\
+\'a0 for i from 1 to length - 1:\
+\'a0 \'a0 InsertSortedPos(addr, i, length-1)\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls5\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Fill: Fill(addr, length) will create an array at address addr of length elements containing length unique integers in reverse sorted order\
+\ls5\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Main: Your main procedure takes no parameters, and doesn't strictly need to be named (its the start of your program, by default).\'a0 It calls Fill to create a reverse sorted array and then calls InsertionSort to sort it.\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 How to get started:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls6\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Get an environment running that you are comfortable in.\'a0 We recommend editing on your own machine with the source on your U drive, and running through a terminal connected to pyrite.\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Write all of the above procedures in C, or some similar language. If you do it in, e.g., Java, keep it C-like (use only primitives and arrays). Make sure your code works. You'll use it to help you reason about your assembly. In a sense, you'll compile it by hand.\'a0 Please note that, while I believe it is correct, I have not tested the given pseudocode!\'a0 It is absolutely possible that it contains off-by-one or other such subtle errors!\'a0 Make your higher-level language implementation work!\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Write Fill first. It will configure your memory in a way that makes it easy to check that the other procedures work.\
+\ls6\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	4	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 You have complete, unmanaged access to memory.\'a0 Memory starts at address 0 and goes (by default, but adjustable via a command line switch) through byte 4095, inclusive (default 4 kB).\'a0 To allocate storage, you simply use it.\'a0 e.g., to access a 10 element array at address 100, I simply put 100 into a register and then use that register to index your array.\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 \
+Gotchas:\
+\
+Be very careful about the 8s (8 byte integers!) you're going to need them all over the place. It's easy to forget them, and then things simply don't work!\
+\
+What to turn in:\
+\
+A single file, assignment1.legv8asm, containing your program. Don't forget the comment at the top with team members names and NetIDs.\
+\
+Using legv8emul:\
+\
+Running the emulator with no parameters will give usage instructions. Code may have comments. Comments start with // and continue to the end of the line (actually, I never check for the second slash, so technically they start with /).\
+\
+There are three debugging pseudo-instructions available to you:\
+\
+\'a0 \'a0 \'a0 \'a0 PRNT reg\
+\
+will print the contents of register reg,\
+\
+\'a0 \'a0 \'a0 \'a0 PRNL\
+\
+will print a blank line, and\
+\
+\'a0 \'a0 \'a0 \'a0 DUMP\
+\
+will print a complete core dump, including all registers, and display the program code with an arrow (-->) indicating the line where the dump was produced. This arrow is not particularly useful when you explicitly DUMP, but it is useful when the emulator automatically generates a core dump for you (e.g., in the event of a crash).\
+\
+Unlike a real computer, the emulator will start up with all registers and memory initialized to zero (except for SP and FP, which are initialized to the size of the stack).\
+\
+Also unlike a real computer, the emulator will instantly crash when you attempt to access an address outside your address space. Upon crashing, the emulator will dump core with the arrow indicating the line that attempted to make the erroneous access.\
+\
+Additionally--and also unlike a real computer--the emulator separates stack and "main memory" as if they are physically separate spaces; thus, it is impossible to "smash" your stack. This separation means (and is implemented by requiring) that stack is accessed exclusively through SP and FP. On a real computer, any register could be used to access the stack should one desire to flaunt convention.\
+\
+The last thing that is unlike a real computer: your program is not stored in main memory! Indeed, your program's code cannot be accessed by the emulator in any way except by the part of the framework which executes it. This makes it (sadly) impossible to write self-modifying code; it also makes it impossible to accidentally overwrite your own running program. A consequence of the separated stack and program memories is that what we refer to as "main memory" begins at address zero, runs through address main-memory-size-minus-one, and is entirely yours to use as you please without worrying about corrupting anything (except your own data).\
+\
+Bugs in the emulator:\
+\
+I wrote the emulator and got it tested to my satisfaction on a tight schedule. It certainly has bugs. Some of those bugs come from incomplete hardware specifications: for instance, the B.cond instructions are almost certainly not correctly implemented due to poor documentation on the condition registers (and, come to think of it, I only implemented them for SUBS and SUBIS). There are also probably implementation bugs, but none are known.\
+\
+If you write code that crashes the emulator, please send it to me so that I can debug and fix it. If you write code that you are convinced is correct and does not behave to specification, similarly send that to me so that I can fix the emulator.\
+\
+If (when?) emulator updates occur, I will announce it to the class so that you can all move to the new version with as little disruption as possible.\
+\
+The rest of this document is reproduced from my 327 syllabus:\
+\
+Linux VMs:\
+\
+I have created two different Linux VM images. One is Slackware 14.1, which is the current version of the distribution of Linux that I run. The other is Fedora 23, which is the current version of the distribution of Linux that runs on Pyrite. I have installed the drivers that allow Linux to interface with the host operating system through the VM, so you should be able to configure shared directories, cut-and-paste between host and client, and other, similarly convenient things.\
+\
+I have done a very small amount of configuration on these installations, including installing Valgrind (a memory debugging tool that you will want), Valkyrie (a GUI frontend to Valgrind), Google Chrome, and compiler updates to the current version of GCC, GCC 8.2.0.\
+\
+I have created a user account, "student" with password "student" and did a small amount of configuration of that account in the .bashrc and .bash_profile files. The root (administrator) account uses the password "root". You will want to change both of these passwords with the "passwd" command! In order to change the root password, you will first need to become root with the su command. You will need to become root if you want to, say, install software or configure system services, but you should not work as root; that would be asking for trouble. On my first Linux system, back in 1995, I worked as root. My second Linux system (same hardware, fresh install) became necessary less than 2 weeks after the first.\
+\
+Both images are shared in a single file on Box with the following link:\
+\
+\pard\pardeftab720\sa240\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://iastate.box.com/v/Ubuntu-2010-VM"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 https://iastate.box.com/v/Ubuntu-2010-VM}}\
+\
+This file is large, slightly over 12 GB. It is a VirtualBox file. You will need to install VirtualBox:\
+\
+https://www.virtualbox.org/wiki/Downloads\
+\
+and import the images (File -> Import Appliance). Once you have successfully imported, you can delete the OVA file.\
+\
+Both systems are configured to use 4GB of memory. The virtual hard drives grow as needed up to a maximum of 32 GB. Much of the configuration can be changed, but only if the machine is not actually running.\
+\
+Remote Server (Pyrite):\
+\
+It is always possible to complete the programming assignments by working directly on pyrite.cs.iastate.edu or on any of the Linux machines in the labs. Connect to Pyrite using ssh. A nice, free Windows ssh client is PuTTY (http://www.putty.org/).\
+\
+To resolve pyrite from off campus, you will need to first connect to the Iowa State VPN (https://vpn.iastate.edu/).\
+\
+Editing code:\
+\
+In a Linux environment, you can edit with emacs, vi, or pico (the first two are powerful and used by professional programmers all over the world, while the latter is simple and used by undergraduate computer science students with tunnel vision all over the world).\
+}

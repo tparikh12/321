@@ -1,0 +1,206 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\fnil\fcharset0 LucidaGrande;\f2\fmodern\fcharset0 Courier;
+\f3\froman\fcharset0 Times-Italic;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue233;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c0\c0\c93333;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{circle\}}{\leveltext\leveltemplateid2\'01\uc0\u9702 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 You may work in teams of 1 to 2 on this assignment. EXACTLY ONE MEMBER OF YOUR TEAM SHOULD SUBMIT THE ASSIGNMENT IN CANVAS! \'a0THE TAs WILL ASSESS A PENALTY IF MORE THAN ONE MEMBER OF YOUR GROUP SUBMITS THE ASSIGNMENT, AS THIS CREATES A SIGNIFICANT OVERHEAD FOR THEM WHILE GRADING. \'a0Your submission should include a file, "authors.txt" giving the names and NetIDs of each member of your team.\
+\
+For this assignment, you will be implementing a disassembler for the binaries that run on our LEGv8 emulator in binary mode.\'a0 Your disassembler will handle input files containing any number of contiguous, binary LEGv8 instructions encoded in big-endian byte order.\'a0 The input file name will be given as the first command line parameter.\'a0 Your output, printed to the terminal, should be--modulo some caveats discussed below--the original LEGv8 assembly code that generated the binary.\
+\
+Except that it ignores the PC and flow control, a disassembler essentially implements the first two stages (fetch and decode) of the five-stage pipeline described in lecture and the textbook.\'a0 A working disassembler requires perhaps half of the total work of building a binary emulator.\
+\
+Your disassembler should fully support the following set of LEGv8 instructions:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls1\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 ADD\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 ADDI\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 AND\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 ANDI\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 B\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 B.cond: This is a CB instruction in which the Rt field is not a register, but a code that indicates the condition extension. These have the values (base 16):\
+\pard\tx940\tx1440\pardeftab720\li1440\fi-1440\partightenfactor0
+\ls1\ilvl1\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 0: EQ\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 1: NE\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 2: HS\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 3: LO\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 4: MI\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 5: PL\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 6: VS\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 7: VC\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 8: HI\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 9: LS\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 a: GE\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 b: LT\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 c: GT\
+\ls1\ilvl1\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	
+\f1 \uc0\u9702 
+\f0 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 d: LE\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls1\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 BL\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 BR: The branch target is encoded in the Rn field.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 CBNZ\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 CBZ\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 EOR\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 EORI\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 LDUR\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 LSL: This instruction uses the shamt field to encode the shift amount,\'a0while Rm is unused.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 LSR: Same as LSL.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 ORR\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 ORRI\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 STUR\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 SUB\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 SUBI\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 SUBIS\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 SUBS\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 MUL\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 PRNT: This is an added instruction (part of our emulator, but not part of LEG or ARM) that prints a register name and its contents in hex and decimal. \'a0This is an R instruction. \'a0The opcode is 11111111101. \'a0The register is given in the Rd field.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 PRNL: This is an added instruction that prints a blank line. \'a0This is an R instruction. \'a0The opcode is 11111111100.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 DUMP: This is an added instruction that displays the contents of all registers and memory, as well as the disassembled program.\'a0 This is an R instruction. \'a0The\'a0opcode is 11111111110.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 HALT: This is an added instruction that triggers a DUMP and terminates\'a0the emulator. \'a0This is an R instruction. \'a0The opcode is 11111111111\
+\pard\pardeftab720\sa240\partightenfactor0
+\cf0 You may implement your disassembler in any language you like so long is it builds (if a compiled language) and runs on pyrite.\'a0 This restriction is necessary in order to give the TAs a common platform to test and evaluate your solution.\'a0 Most important, popular, or trendy languages are already installed on pyrite, including C, C++, Java, and Python.\'a0 If your language of choice is not installed, you are welcome to contact the system administrators <coms-ssg@iastate.edu> to request its installation; however, I can make no guarantees about whether or not they will do the installation for you, and--if they do--how timely their service will be.\
+\
+In order to minimize the burden on the TAs, your solution should include two bourne shell scripts in the top level directory: build.sh and run.sh.\'a0 build.sh should include the executable command(s) necessary to build your program; if your program is in an interpreted language, this final may be empty.\'a0 run.sh should take one parameter, the name of a LEGv8 binary file, and pass it to your disassembler.\'a0 For instance, if I were implementing my disassembler in C and had the program in a source file named disasm.c, my build.sh would contain exactly:\
+\
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f2\fs26 \cf0 gcc disasm.c -o disasm
+\f0\fs24 \
+\
+And my run.sh would contain exactly:\
+\
+
+\f2\fs26 ./disasm $1
+\f0\fs24 \
+\
+Bourne shell script are simply text files, and\'a0
+\f3\i $1
+\f0\i0 \'a0is interpreted as the first positional parameter passed to the script on the command line.\'a0 To run your scripts, execute\'a0
+\f2\fs26 sh build.sh
+\f0\fs24 \'a0or\'a0
+\f2\fs26 sh run.sh <legv8 assembly file>
+\f0\fs24 .\
+\
+The data lost in converting from assembly to machine code are comments and label names.\'a0 Both of these are completely irretrievable, but new label names can be generated, even if these are devoid of the semantic meanings imparted by the original program author.\'a0 For example, you can simply number the labels: "label1", "label2", etc.\'a0 Your disassembled output should generate new label names such that our emulator can execute or assemble your generated code.\'a0 Your "reassembled disassembly" should be byte-for-byte identical to the input.\
+\
+To use the emulator as an assembler (the output file will have the same name is the input with ".machine" concatenated onto the end):\'a0
+\f2\fs26 ./legv8emul <legv8 assembly file> -a
+\f0\fs24 \
+To run the emulator in binary emulation mode:\'a0
+\f2\fs26 ./legv8emul <legv8 binary file> -b
+\f0\fs24 \
+\
+Here is example C code to load the binary program from disc:\
+\
+
+\f2\fs26 \'a0 \'a0 //This is in main():
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 if (binary) \{
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 \'a0 fd = open(argv[1], O_RDONLY);
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 \'a0 fstat(fd, &buf);
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 \'a0 program = mmap(NULL, buf.st_size, PROT_READ | PROT_WRITE,
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0MAP_PRIVATE, fd, 0);
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 \'a0 bprogram = calloc(buf.st_size / 4, sizeof (*bprogram));
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 \'a0 for (i = 0; i < (buf.st_size / 4); i++) \{
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 \'a0 \'a0 program[i] = be32toh(program[i]);
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 \'a0 \'a0 decode(program[i], bprogram + i);
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 \'a0 \}
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 \'a0 emulate(bprogram, buf.st_size / 4, &m);
+\f0\fs24 \
+
+\f2\fs26 \'a0 \'a0 \'a0 return 0;
+\f0\fs24 \uc0\u8232 
+\f2\fs26 \'a0 \'a0 \}
+\f0\fs24 \
+\
+be32toh() is a function found in endian.h which converts 32 bit integers from big endian to host endian. \'a0I will talk more about this, and show some other, related code in lecture.\
+\
+Here is a list of the opcodes, extracted from the emulator sources: {\field{\*\fldinst{HYPERLINK "/redirect/s3?bucket=uploads&prefix=paste%2Fjl3xxt6a69d7hc%2F04427f39b5ca2fa7071be6d3bec0ce43fcc91fb988a4ce5258f7c2df1e20fa78%2Fopcodes.txt"}}{\fldrslt \cf3 \ul \ulc3 \strokec3 opcodes.txt}}\
+\
+The 0b prefix is a GNU extension (supported by GCC and some other compilers, but not an official part of C) that signifies the value that follows is given in binary.\
+\
+#pin\
+}
